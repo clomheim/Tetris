@@ -1,0 +1,33 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import javax.swing.JLabel;
+
+/**
+ * Creates the scoring display.
+ * 
+ * @author Doug Lomheim
+ * @version 0.1.20130531
+ */
+@SuppressWarnings("serial")
+public class ScoreLabel extends JLabel
+{
+  /**
+   * Creates the display for the scoring information.
+   */
+  public ScoreLabel()
+  {
+    super();
+    final StringBuilder sb = new StringBuilder();
+    sb.append("<html>Score: \n");
+    sb.append(0);
+    sb.append("<br>Level: \n");
+    sb.append(0);
+    sb.append("<br>Lines Cleared: \n");
+    sb.append(0);
+    sb.append("</html>");
+    setText(sb.toString());
+  }
+}

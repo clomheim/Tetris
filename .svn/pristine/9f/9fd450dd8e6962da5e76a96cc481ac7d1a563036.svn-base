@@ -1,0 +1,111 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import java.util.Observable;
+import java.util.Observer;
+
+/**
+ * 
+ * @author Doug Lomheim
+ * @version 0.1.20130607
+ */
+public class ScoreSheet implements Observer
+{
+  /**
+   * 
+   */
+  private int my_score;
+  
+  /**
+   * 
+   */
+  private int my_level;
+  
+  /**
+   * 
+   */
+  private int my_lines;
+  
+  /**
+   * 
+   */
+  public ScoreSheet()
+  {
+    my_score = 0;
+    my_level = 1;
+    my_lines = 0;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public int getScore()
+  {
+    return my_score;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public int getLevel()
+  {
+    setLevel();
+    
+    return my_level;
+  }
+  
+  /**
+   * 
+   * @return
+   */
+  public int getLines()
+  {
+    return my_lines;
+  }
+  
+  /**
+   * 
+   */
+  private void setLevel()
+  {
+      my_level = (my_lines / 10) + 1;
+  }
+
+  @Override
+  public void update(Observable the_arg0, Object the_arg1)
+  {
+    if(the_arg1 instanceof Integer)
+    {
+      int lines = (Integer)the_arg1;
+      my_lines += lines;
+      
+      if (lines == 1)
+      {
+        my_score += 100;
+      }
+      else if (lines == 2)
+      {
+        my_score += 200;
+      }
+      else if (lines == 3)
+      {
+        my_score += 400;
+      }
+      else if (lines == 4)
+      {
+        my_score =+ 800;
+      }
+    }
+    
+    if (the_arg1 instanceof Boolean)
+    {
+      my_score += 10;
+    }
+    
+  }
+  
+}

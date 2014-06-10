@@ -1,0 +1,190 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.Timer;
+
+/**
+ * This class keeps track of all scores for the game.
+ * 
+ * @author Doug Lomheim
+ * @version 0.1.20130608
+ */
+public class ScoreSheet implements Observer
+{
+  
+  /**
+   * The rate at which the pieces speed up.
+   */
+  private static final double SPEED_RATIO = .75;
+  
+  /**
+   * The base score for a piece freezing.
+   */
+  private static final int BASE_SCORE = 10;
+  
+  /**
+   * Score for clearing a single line.
+   */
+  private static final int SINGLE_LINE = 100;
+  /**
+   * Score for clearing two lines.
+   */
+  private static final int DOUBLE_LINE = 200;
+  
+  /**
+   * Score for clearing three lines.
+   */
+  private static final int TRIPLE_LINE = 400;
+  
+  /**
+   * Score for clearing four lines.
+   */
+  private static final int TETRIS = 800;
+  
+  /**
+   * Three lines.
+   */
+  private static final int TRIPLE = 3;
+  
+  /**
+   * Four lines.
+   */
+  private static final int QUADRUPLE = 4;
+  
+  /**
+   * The timer for how fast the pieces fall.
+   */
+  private final Timer my_timer;
+  
+  /**
+   * The total score.
+   */
+  private int my_score;
+  
+  /**
+   * The current level.
+   */
+  private int my_level;
+  
+  /**
+   * Total lines cleared.
+   */
+  private int my_lines;
+  
+  /**
+   * The last level that sped up.
+   */
+  private int my_last_speed_up;
+  
+  /**
+   * Constructor to initialize all fields.
+   * 
+   * @param the_timer The timer for how fast the pieces fall.
+   */
+  public ScoreSheet(final Timer the_timer)
+  {
+    my_last_speed_up = 1;
+    my_timer = the_timer;
+    my_score = 0;
+    my_level = 1;
+    my_lines = 0;
+  }
+  
+  /**
+   * Returns the current score.
+   * 
+   * @return The current score.
+   */
+  public int getScore()
+  {
+    return my_score;
+  }
+  
+  /**Returns the current level.
+   * 
+   * @return The current level.
+   */
+  public int getLevel()
+  {
+    setLevel();
+    
+    return my_level;
+  }
+  
+  /**
+   * Returns the number of lines cleared.
+   * 
+   * @return The number of lines cleared.
+   */
+  public int getLines()
+  {
+    return my_lines;
+  }
+  
+  /**
+   * Resets all scores fir a new game.
+   */
+  public void newGame()
+  {
+    my_last_speed_up = 1;
+    my_score = 0;
+    my_level = 1;
+    my_lines = 0;
+  }
+  
+  /**
+   * Sets the current level, based on lines cleared.
+   */
+  private void setLevel()
+  {
+    my_level = (my_lines / 2) + 1;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void update(final Observable the_arg0, final Object the_arg1)
+  {
+    if (my_level > my_last_speed_up)
+    {
+      final int time = my_timer.getDelay();
+      my_timer.setDelay((int) (time * SPEED_RATIO));
+      my_last_speed_up = my_level;
+    }
+    if (the_arg1 instanceof Integer)
+    {
+      final int lines = (Integer) the_arg1;
+      my_lines += lines;
+      
+      if (lines == 1)
+      {
+        my_score += SINGLE_LINE;
+      }
+      else if (lines == 2)
+      {
+        my_score += DOUBLE_LINE;
+      }
+      else if (lines == TRIPLE)
+      {
+        my_score += TRIPLE_LINE;
+      }
+      else if (lines == QUADRUPLE)
+      {
+        my_score += TETRIS;
+      }
+    }
+    
+    if (the_arg1 instanceof Boolean)
+    {
+      my_score += BASE_SCORE;
+    }
+    
+  }
+  
+}

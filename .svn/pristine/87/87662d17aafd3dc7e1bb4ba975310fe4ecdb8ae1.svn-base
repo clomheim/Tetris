@@ -1,0 +1,58 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import java.awt.Graphics;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+/**
+ * Creates the scoring display.
+ * 
+ * @author Doug Lomheim
+ * @version 0.1.20130607
+ */
+@SuppressWarnings("serial")
+public class ScoreLabel extends JPanel implements Observer
+{
+  private ScoreSheet my_scores;
+  private JLabel my_score_label;
+  private JLabel my_level_label;
+  private JLabel my_lines_label;
+  /**
+   * Creates the display for the scoring information.
+   */
+  public ScoreLabel(ScoreSheet the_sheet)
+  {
+    super();
+    my_scores = the_sheet;
+    my_score_label = new JLabel("Score: 0");
+    my_level_label = new JLabel("Level: 1");
+    my_lines_label = new JLabel("Lines Cleared: 0");
+    
+    setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    add(my_score_label);
+    add(my_level_label);
+    add(my_lines_label);
+  }
+  
+  @Override
+  public void paintComponent(Graphics the_graphics)
+  {
+    super.paintComponent(the_graphics);
+    my_score_label.setText("Score: " + my_scores.getScore());
+    my_level_label.setText("Level: " + my_scores.getLevel());
+    my_lines_label.setText("Lines Cleared: " + my_scores.getLines());
+  }
+  
+  @Override
+  public void update(Observable o, Object arg)
+  {
+    repaint();
+  }
+}

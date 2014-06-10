@@ -1,0 +1,30 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
+/**
+ * @author Doug Lomheim
+ * @version 0.1.20130530
+ */
+public class GameBoard extends JPanel
+{
+  public GameBoard()
+  {
+    super();
+    setBackground(Color.BLACK);
+    setPreferredSize(new Dimension(100, 200));
+  }
+  
+  @Override
+  public void paintComponent(Graphics the_graphics)
+  {
+    
+  }
+}

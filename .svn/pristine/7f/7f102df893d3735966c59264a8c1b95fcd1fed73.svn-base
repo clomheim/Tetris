@@ -1,0 +1,49 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+/**
+ * @author Doug Lomheim
+ * @version 0.1.20130530
+ */
+public class GameFrame
+{
+  /**
+   * 
+   */
+  private JFrame my_game_frame;
+  
+  public GameFrame()
+  {
+    my_game_frame = new JFrame();
+  }
+  
+  public void start(JFrame the_frame)
+  {
+    my_game_frame.setLayout(new FlowLayout());
+    JLabel title = new JLabel();
+    title.setIcon(null);
+    my_game_frame.add(title);
+    my_game_frame.add(new GameBoard());
+    JPanel panel = new JPanel();
+    panel.setLayout(new  BoxLayout(panel, BoxLayout.PAGE_AXIS));
+    panel.add(new NextBoard());
+    panel.add(new ScoreLabel());
+    my_game_frame.add(panel);
+    my_game_frame.setTitle("Tetris TSCC 305 Spring 2013");
+    my_game_frame.setLocationRelativeTo(the_frame);
+    my_game_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    my_game_frame.pack();
+    my_game_frame.setVisible(true);
+    
+  }
+}

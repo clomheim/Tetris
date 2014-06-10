@@ -1,0 +1,33 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+/**
+ * This class begins the Tetris game.
+ * 
+ * @author Doug Lomheim
+ * @version 0.1.20130530
+ */
+public final class GameMain
+{
+  /**
+   * Private constructor to prevent instantiation.
+   */
+  private GameMain()
+  {
+    //Unused.
+  }
+
+  /**
+   * Starting point for the program.
+   * 
+   * @param the_args Unused in this class.
+   */
+  public static void main(final String[] the_args)
+  {
+    new WelcomeFrame().start();
+
+  }
+
+}

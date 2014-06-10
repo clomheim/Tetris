@@ -1,0 +1,129 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+/**
+ * This class creates a board with all the function buttons.
+ * 
+ * @author Doug Lomheim
+ * @version 0.1.20130608
+ */
+@SuppressWarnings("serial")
+public class ButtonPanel extends JPanel
+{
+  /**
+   * Rows in GridLayout.
+   */
+  private static final int ROWS = 5;
+  
+  /**
+   * 
+   */
+  private final Font my_font;
+  
+  /**
+   * The pause button.
+   */
+  private final JButton my_pause;
+  
+  /**
+   * The end game button.
+   */
+  private final JButton my_end_game;
+  
+  /**
+   * The new game button.
+   */
+  private final JButton my_new_game;
+  
+  /**
+   * The exit button.
+   */
+  private final JButton my_exit;
+  
+  /**
+   * The instructions button.
+   */
+  private final JButton my_instructions;
+  
+  /**
+   * Constructor initializing board.
+   * 
+   * @param the_font The font to be used.
+   */
+  public ButtonPanel(final Font the_font)
+  {
+    super();
+    my_font = the_font;
+    my_pause = new JButton("Pause");
+    my_end_game = new JButton("End Game");
+    my_new_game = new JButton("New Game");
+    my_exit = new JButton("Exit");
+    my_instructions = new JButton("Instructions");
+    
+    addComponents();
+  }
+  
+  /**
+   * Adds the buttons to the panel.
+   */
+  private void addComponents()
+  {
+    setLayout(new GridLayout(ROWS, 1));
+    setAlignmentX(Component.CENTER_ALIGNMENT);
+    setOpaque(false);
+    
+    setUpButtons();
+    
+    add(my_pause);
+    add(my_instructions);
+    add(my_new_game);
+    add(my_end_game);
+    add(my_exit);
+  }
+  
+  /**
+   * Sets up the buttons to have no border or fill.
+   */
+  private void setUpButtons()
+  {
+    my_pause.setForeground(Color.WHITE);
+    my_pause.setFont(my_font);
+    my_pause.setBorderPainted(false);
+    my_pause.setContentAreaFilled(false);
+    my_pause.setFocusPainted(false);
+    
+    my_instructions.setForeground(Color.WHITE);
+    my_instructions.setFont(my_font);
+    my_instructions.setBorderPainted(false);
+    my_instructions.setContentAreaFilled(false);
+    my_instructions.setFocusPainted(false);
+    
+    my_new_game.setForeground(Color.WHITE);
+    my_new_game.setFont(my_font);
+    my_new_game.setBorderPainted(false);
+    my_new_game.setContentAreaFilled(false);
+    my_new_game.setFocusPainted(false);
+    
+    my_end_game.setForeground(Color.WHITE);
+    my_end_game.setFont(my_font);
+    my_end_game.setBorderPainted(false);
+    my_end_game.setContentAreaFilled(false);
+    my_end_game.setFocusPainted(false);
+    
+    my_exit.setForeground(Color.WHITE);
+    my_exit.setFont(my_font);
+    my_exit.setBorderPainted(false);
+    my_exit.setContentAreaFilled(false);
+    my_exit.setFocusPainted(false);
+  }
+}

@@ -1,0 +1,264 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Rectangle2D;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import model.Block;
+import model.Board;
+import model.IPiece;
+import model.JPiece;
+import model.LPiece;
+import model.MutablePiece;
+import model.OPiece;
+import model.SPiece;
+import model.TPiece;
+import model.ZPiece;
+
+/**
+ * This class constructs the board on which the game is displayed.
+ * 
+ * @author Doug Lomheim
+ * @version 0.1.20130608
+ */
+@SuppressWarnings("serial")
+public class GameBoard extends JPanel implements Observer
+{
+  /**
+   * The size of the blocks in pixels.
+   */
+  private static final int BLOCK_SIZE = 29;
+  
+  /**
+   * The number of the last index of the array containing the coordinates of the blocks.
+   */
+  private static final int INDEX_SIZE = 3;
+  
+  /**
+   * The alpha value for the board.
+   */
+  private static final int ALPHA = 150;
+  
+  /**
+   * The board in which the game is played.
+   */
+  private final Board my_board;
+  
+  /**
+   * The timer that controls the speed at which pieces fall.
+   */
+  private final Timer my_timer;
+  
+  /**
+   * The height of the displayed board.
+   */
+  private final int my_height;
+  
+  /**
+   * Initializes the panel to be used.
+   * 
+   * @param the_board The board in which the game is played.
+   * @param the_timer THe timer controlling how fast the pieces fall.
+   */
+  public GameBoard(final Board the_board, final Timer the_timer)
+  {
+    super();
+    my_board = the_board;
+    my_timer = the_timer;
+    my_height = my_board.getHeight() * BLOCK_SIZE;
+    final int width = my_board.getWidth() * BLOCK_SIZE;
+    setBackground(new Color(0, 0, 0, ALPHA));
+    setPreferredSize(new Dimension(width, my_height));
+    addKeyListener(new KeyboardListener());
+    setFocusable(true);
+    requestFocusInWindow();
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void paintComponent(final Graphics the_graphics)
+  {
+    super.paintComponent(the_graphics);
+   
+    final Color clear = new Color(0, 0, 0, 0);
+    final Graphics2D g2d = (Graphics2D) the_graphics;
+    paintFrozenBlocks(g2d, clear);
+    
+    
+    final MutablePiece piece = my_board.getCurrentPiece();
+    int[][] loc;
+    if (piece instanceof IPiece)
+    {
+      final IPiece ipiece = (IPiece) piece;
+      loc = ipiece.getBoardCoordinates();
+      g2d.setPaint(ipiece.getBlock().getColor());
+    }
+    else if (piece instanceof JPiece)
+    {
+      final JPiece jpiece = (JPiece) piece;
+      loc = jpiece.getBoardCoordinates();
+      g2d.setPaint(jpiece.getBlock().getColor());
+    }
+    else if (piece instanceof LPiece)
+    {
+      final LPiece lpiece = (LPiece) piece;
+      loc = lpiece.getBoardCoordinates();
+      g2d.setPaint(lpiece.getBlock().getColor());
+    }
+    else if (piece instanceof OPiece)
+    {
+      final OPiece opiece = (OPiece) piece;
+      loc = opiece.getBoardCoordinates();
+      g2d.setPaint(opiece.getBlock().getColor());
+    }
+    else if (piece instanceof SPiece)
+    {
+      final SPiece spiece = (SPiece) piece;
+      loc = spiece.getBoardCoordinates();
+      g2d.setPaint(spiece.getBlock().getColor());
+    }
+    else if (piece instanceof TPiece)
+    {
+      final TPiece tpiece = (TPiece) piece;
+      loc = tpiece.getBoardCoordinates();
+      g2d.setPaint(tpiece.getBlock().getColor());
+    }
+    else
+    {
+      final ZPiece zpiece = (ZPiece) piece;
+      loc = zpiece.getBoardCoordinates();
+      g2d.setPaint(zpiece.getBlock().getColor());
+    }
+    
+    g2d.fill(new Rectangle2D.Double(loc[0][0] * BLOCK_SIZE, my_height - BLOCK_SIZE 
+                                    - (loc[0][1] * BLOCK_SIZE), BLOCK_SIZE, BLOCK_SIZE));
+    g2d.fill(new Rectangle2D.Double(loc[1][0] * BLOCK_SIZE, my_height - BLOCK_SIZE 
+                                    - (loc[1][1] * BLOCK_SIZE), BLOCK_SIZE, BLOCK_SIZE));
+    g2d.fill(new Rectangle2D.Double(loc[2][0] * BLOCK_SIZE, my_height - BLOCK_SIZE 
+                                    - (loc[2][1] * BLOCK_SIZE), BLOCK_SIZE, BLOCK_SIZE));
+    g2d.fill(new Rectangle2D.Double(loc[INDEX_SIZE][0] * BLOCK_SIZE, my_height - BLOCK_SIZE 
+                                    - (loc[INDEX_SIZE][1] * BLOCK_SIZE), BLOCK_SIZE,
+                                    BLOCK_SIZE));
+    g2d.setPaint(Color.BLACK);
+    g2d.draw(new Rectangle2D.Double(loc[0][0] * BLOCK_SIZE, my_height - BLOCK_SIZE 
+                                    - (loc[0][1] * BLOCK_SIZE), BLOCK_SIZE, BLOCK_SIZE));
+    g2d.draw(new Rectangle2D.Double(loc[1][0] * BLOCK_SIZE, my_height  - BLOCK_SIZE 
+                                    - (loc[1][1] * BLOCK_SIZE), BLOCK_SIZE, BLOCK_SIZE));
+    g2d.draw(new Rectangle2D.Double(loc[2][0] * BLOCK_SIZE, my_height - BLOCK_SIZE 
+                                    - (loc[2][1] * BLOCK_SIZE), BLOCK_SIZE, BLOCK_SIZE));
+    g2d.draw(new Rectangle2D.Double(loc[INDEX_SIZE][0] * BLOCK_SIZE, my_height - BLOCK_SIZE 
+                                    - (loc[INDEX_SIZE][1] * BLOCK_SIZE), BLOCK_SIZE, 
+                                    BLOCK_SIZE));
+    
+  }
+  
+  /**
+   * Paints the frozen blocks.
+   * 
+   * @param the_graphics The graphics tool to paint with.
+   * @param the_clear The color to color with.
+   */
+  private void paintFrozenBlocks(final Graphics2D the_graphics, final Color the_clear)
+  {
+    final List<Block[]> blocks = my_board.getFrozenBlocks();
+    int height = my_height - BLOCK_SIZE;
+    for (Block[] b : blocks)
+    {
+      for (int i = 0; i < b.length; i++)
+      {
+        the_graphics.setPaint(b[i].getColor());
+        the_graphics.fill(new Rectangle2D.Double(i * BLOCK_SIZE, height, BLOCK_SIZE, 
+                                                 BLOCK_SIZE));
+        if (b[i].getColor().equals(the_clear))
+        {
+          the_graphics.setPaint(the_clear);
+          the_graphics.draw(new Rectangle2D.Double(i * BLOCK_SIZE, height, BLOCK_SIZE, 
+                                                   BLOCK_SIZE));
+        }
+        else
+        {
+          the_graphics.setPaint(Color.BLACK);
+          the_graphics.draw(new Rectangle2D.Double(i * BLOCK_SIZE, height, BLOCK_SIZE, 
+                                                   BLOCK_SIZE));
+        }
+      }
+      height -= BLOCK_SIZE;
+    }
+  }
+
+ /**
+  * {@inheritDoc}
+  */
+  @Override
+  public void update(final Observable the_observable, final Object the_object)
+  {
+    if (my_board.gameIsOver()) 
+    {
+      JOptionPane.showMessageDialog(this, "Game Over!");
+      my_timer.stop();
+    }
+    else
+    {
+      repaint();
+    }
+  }
+  
+  /**
+   * Handles what to do when certain keys are pressed.
+   * 
+   * @author Doug Lomheim
+   * @version 0.1.20130531
+   */
+  private class KeyboardListener extends KeyAdapter
+  {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void keyPressed(final KeyEvent the_event)
+    {
+      if (!my_board.gameIsOver()) 
+      {
+        final String key = KeyEvent.getKeyText(the_event.getKeyCode());
+      
+        if ("A".equals(key))
+        {
+          my_board.moveLeft();
+        }
+        else if ("D".equals(key))
+        {
+          my_board.moveRight();
+        }
+        else if ("S".equals(key))
+        {
+          my_board.moveDown();
+        }
+        else if ("Space".equals(key))
+        {
+          my_board.hardDrop();
+        }
+        else if ("Shift".equals(key))
+        {
+          my_board.rotate();
+        }
+      }
+    }
+  }
+}

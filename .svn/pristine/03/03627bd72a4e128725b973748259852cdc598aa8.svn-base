@@ -1,0 +1,84 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import java.awt.FlowLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import model.Board;
+
+/**
+ * This class creates the frame that the game is played in.
+ * 
+ * @author Doug Lomheim
+ * @version 0.1.20130531
+ */
+public class GameFrame
+{
+  /**
+   * Represents one second in milliseconds.
+   */
+  private static final int ONE_SECOND = 1000;
+  
+  /**
+   * The frame in which game componenets are displayed.
+   */
+  private final JFrame my_game_frame;
+  
+  /**
+   * The board in which the game is played.
+   */
+  private final Board my_board;
+  
+  /**
+   * The time for how fast the peices fall.
+   */
+  private final Timer my_timer;
+  
+  /**
+   * Initializes the fields.
+   */
+  public GameFrame()
+  {
+    my_game_frame = new JFrame();
+    my_board = new Board();
+    my_timer = new Timer(ONE_SECOND, new TimerListener(my_board));
+  }
+  
+  /**
+   * Constructs the frame and game components.
+   * 
+   * @param the_frame The previous frame from which to set the new frame relative to.
+   */
+  public void start(final JFrame the_frame)
+  {
+    my_game_frame.setLayout(new FlowLayout());
+    final JLabel title = new JLabel();
+    title.setIcon(null);
+    my_game_frame.add(title);
+    final GameBoard game_board = new GameBoard(my_board, my_timer);
+    my_board.addObserver(game_board);
+    my_game_frame.add(game_board);
+    final JPanel panel = new JPanel();
+    panel.setLayout(new  BoxLayout(panel, BoxLayout.PAGE_AXIS));
+    final NextBoard next_board = new NextBoard(my_board);
+    my_board.addObserver(next_board);
+    panel.add(next_board);
+    panel.add(new ScoreLabel());
+    my_game_frame.add(panel);
+    my_game_frame.setTitle("Tetris TSCC 305 Spring 2013");
+    my_game_frame.setLocationRelativeTo(the_frame);
+    my_game_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    my_game_frame.pack();
+    my_game_frame.setResizable(false);
+    my_game_frame.setVisible(true);
+    
+    my_timer.start();
+  }
+}

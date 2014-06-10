@@ -1,0 +1,138 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+/**
+ * This class creates an Introduction screen for the game.
+ * 
+ * @author Doug Lomheim
+ * @version 0.1.201300608
+ */
+@SuppressWarnings("serial")
+public class WelcomePanel extends JPanel
+{
+  /**
+   * Default Dimension for the welcome screen.
+   */
+  private static final Dimension DEFAULT_SIZE = new Dimension(300, 300);
+  
+  /**
+   * The number of rows in the welcome screen grid.
+   */
+  private static final int GRID_LENGTH = 4;
+  
+  /**
+   * The number of columns in the welcome screen grid.
+   */
+  private static final int GRID_WIDTH = 1;
+  
+  /**
+   * The large font size.
+   */
+  private static final float LARGE_FONT = 36f;
+  
+  /**
+   * The frame in which everything is displayed.
+   */
+  private final JFrame my_frame;
+  
+  /**
+   * The font to be used for all components.
+   */
+  private final Font my_font;
+  
+  /**
+   * Creates the panel to display the welcome screen options.
+   * 
+   * @param the_frame The frame that is being displayed in.
+   * @param the_font The font to be used.
+   */
+  public WelcomePanel(final JFrame the_frame, final Font the_font)
+  {
+    super();
+    my_frame = the_frame;
+    my_font = the_font;
+    setPreferredSize(DEFAULT_SIZE);
+    setLayout(new GridLayout(GRID_LENGTH, GRID_WIDTH));
+    
+    addComponents();
+  }
+  
+  /**
+   * Adds components to the panel.
+   */
+  private void addComponents()
+  {
+
+    final JButton start_button = new JButton("Start Game");
+    start_button.setForeground(Color.WHITE);
+    start_button.setFont(my_font);
+    start_button.setBorderPainted(false);
+    start_button.setContentAreaFilled(false);
+    start_button.setFocusPainted(false);
+    start_button.addActionListener(new GameStartListener(my_frame, my_font));
+    
+    final  JButton instructions_button = new JButton("Instructions");
+    instructions_button.setForeground(Color.WHITE);
+    instructions_button.setFont(my_font);
+    instructions_button.setBorderPainted(false);
+    instructions_button.setContentAreaFilled(false);
+    instructions_button.setFocusPainted(false);
+    instructions_button.addActionListener(new InstructionListener(my_frame));
+    
+    final JButton exit_button = new JButton("Exit");
+    exit_button.setForeground(Color.WHITE);
+    exit_button.setFont(my_font);
+    exit_button.setBorderPainted(false);
+    exit_button.setContentAreaFilled(false);
+    exit_button.setFocusPainted(false);
+    
+    exit_button.addActionListener(new AbstractAction()
+    {
+
+      @Override
+      public void actionPerformed(final ActionEvent the_event)
+      {
+        my_frame.dispose();
+        
+      }
+    });
+    
+    final JLabel label = new JLabel(" Welcome to Tetris!");
+    final Font large = my_font.deriveFont(LARGE_FONT);
+    label.setFont(large);
+    label.setForeground(Color.WHITE);
+    label.setHorizontalAlignment(SwingConstants.CENTER);
+    
+    add(label);
+    add(start_button);
+    add(instructions_button);
+    add(exit_button);
+  }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void paintComponent(final Graphics the_graphics)
+  {
+    // Image from http://bluestreak2.files.wordpress.com/2008/11/nerv-old.jpg
+    the_graphics.drawImage(new ImageIcon("./nerv-old.jpg").getImage(), 0, 0, this);
+  }
+  
+}

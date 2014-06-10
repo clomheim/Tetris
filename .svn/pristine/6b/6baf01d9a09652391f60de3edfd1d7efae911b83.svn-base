@@ -1,0 +1,102 @@
+/* TCSS 305 Spring 2013
+ * dlomheim_tetris
+ */
+package view;
+
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.Timer;
+
+import model.Board;
+
+/**
+ * Handles actions for starting a new game.
+ * 
+ * @author Doug Lomheim
+ * @version 0.1.20130608
+ */
+@SuppressWarnings("serial")
+public class NewGameAction extends AbstractAction
+{
+  /**
+   * The height of the new game.
+   */
+  private static final int HEIGHT = 20;
+  
+  /**
+   *The width of the new game.
+   */
+  private static final int WIDTH = 20;
+  
+  /**
+   * The board in which the game is played.
+   */
+  private final Board my_board;
+  
+  /**
+   * The score sheet.
+   */
+  private final ScoreSheet my_sheet;
+  
+  /**
+   * The timer controlling how fast the pieces fall.
+   */
+  private final Timer my_timer;
+  
+  /**
+   * The pause button.
+   */
+  private final JButton my_pause_button;
+  
+  /**
+   * The music player.
+   */
+  private final MusicPlayer my_player;
+  
+  /**
+   * The pause state of the game.
+   */
+  private final PauseState my_pause_state;
+  
+  /**
+   * Constructor Initializing fields.
+   * 
+   * @param the_board The board in which the game is played.
+   * @param the_sheet The score sheet
+   * @param the_timer The timer controlling how fast the pieces fall.
+   * @param the_button The button that pauses the game.
+   * @param the_state The pause state of the game.
+   * @param the_player The music player.
+   */
+  public NewGameAction(final Board the_board, final ScoreSheet the_sheet, 
+                       final Timer the_timer, final JButton the_button, 
+                       final PauseState the_state, final MusicPlayer the_player)
+  {
+    super();
+    my_board = the_board;
+    my_sheet = the_sheet;
+    my_timer = the_timer;
+    my_pause_button = the_button;
+    my_pause_state = the_state;
+    my_player = the_player;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void actionPerformed(final ActionEvent the_event)
+  {
+    my_player.stopPlay();
+    my_player.change(0);
+    my_board.newGame(WIDTH, HEIGHT, null);
+    my_sheet.newGame();
+    my_timer.restart();
+    my_pause_button.setEnabled(true);
+    my_pause_state.setPauseState(false);
+
+  }
+
+}
